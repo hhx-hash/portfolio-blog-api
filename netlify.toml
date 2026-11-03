@@ -1,0 +1,33 @@
+[build]
+  command = "npm install"
+  publish = "public"
+  functions = "netlify/functions"
+
+# /api/projects -> /.netlify/functions/api/api/projects
+# (the function's basePath strips "/.netlify/functions/api", so Express still
+#  receives the original "/api/..." path)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api"
+  to = "/.netlify/functions/api/api"
+  status = 200
+  force = true
+
+# Health check path announced to the hosting service.
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/api/health"
+  status = 200
+  force = true
+
+# Root returns the small JSON index from app.js.
+[[redirects]]
+  from = "/"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
